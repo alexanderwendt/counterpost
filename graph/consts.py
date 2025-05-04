@@ -1,0 +1,6 @@
+SUMMARIZE = "summarize"
+RETRIEVE_VALUES = "retrieve_values"
+GRADE_DOCUMENTS = "grade_documents"
+WRITE_ANSWER = "write_answer"
+STYLE = "style"
+ABORT=  "abort"
