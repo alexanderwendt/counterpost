@@ -1,7 +1,7 @@
 from graph.nodes.grade_documents import grade_documents
 from langgraph.constants import END
 
-from graph.nodes import retrieve_values
+from graph.nodes.retrieve_values import retrieve_values
 from graph.nodes.summarize_posting import summarize_posting
 from graph.nodes.write_posting import write_posting
 from graph.state import GraphState
@@ -43,7 +43,7 @@ workflow.add_edge(RETRIEVE_VALUES, GRADE_DOCUMENTS)
 workflow.add_conditional_edges(GRADE_DOCUMENTS,
                                decide_to_answer,
                                {
-                                   ABORT: ABORT,
+                                   ABORT: END,
                                    WRITE_ANSWER: WRITE_ANSWER
                                }, )
 # End

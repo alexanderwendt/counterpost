@@ -13,11 +13,11 @@ system_prompt = """
     only the summary as an answer.
     """
 
-route_prompt = ChatPromptTemplate.from_messages(
+input_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
         ("human", "{posting}"),
     ]
 )
 
-summarizer_chain = system_prompt | llm
+summarizer_chain = input_prompt | llm

@@ -9,7 +9,7 @@ from storage.customretriever import CustomChromaRetriever
 agent_type = 'value_agent'
 config = load_config("./conf/config.ini")
 
-def apply_values(state: GraphState) -> Dict[str, Any]:
+def retrieve_values(state: GraphState) -> Dict[str, Any]:
     '''
     Apply the loaded values on the post to write an answer
 
