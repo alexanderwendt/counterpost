@@ -1,7 +1,12 @@
 from typing import Any, Dict
 
+import logging
 from graph.chains.retrieval_grader import retrieval_grader
 from graph.state import GraphState
+
+# Create a custom logger
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
     """
@@ -13,20 +18,19 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
     :return: state(dict), filtered out irrelevant documents and updated web_search state
     """
 
-    print("---CHECK DOCUMENT OF RELEVANCE TO POSTING---")
+    log.info("---CHECK DOCUMENT OF RELEVANCE TO POSTING---")
     query = state["summary"]
-    documents = state["value_documents"]
+    documents = state["loaded_value_documents"]
 
     filtered_docs = []
     for d in documents:
         score = retrieval_grader.invoke(
-            {"query": query, "document": d.page_content}
+            {"posting": query, "document": d.page_content}
         )
         grade = score.binary_score
         if grade.lower() == "yes":
-            print("---GRADE: VALUE DOCUMENT RELEVANT---")
+            log.info("---GRADE: VALUE DOCUMENT RELEVANT---")
             filtered_docs.append(d)
         else:
-            print("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
-            continue
-    return {"value_documents": filtered_docs, "summary": query}
+            log.info("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
+    return {"filtered_value_documents": filtered_docs, "summary": query}

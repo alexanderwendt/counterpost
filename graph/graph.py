@@ -1,13 +1,27 @@
-from graph.nodes.grade_documents import grade_documents
-from langgraph.constants import END
+import logging
 
+from langgraph.constants import END
+from langgraph.graph import StateGraph
+
+from graph import state_utils
+from graph.consts import ABORT, SUMMARIZE, RETRIEVE_VALUES, GRADE_DOCUMENTS, WRITE_ANSWER
+from graph.nodes.grade_documents import grade_documents
 from graph.nodes.retrieve_values import retrieve_values
 from graph.nodes.summarize_posting import summarize_posting
 from graph.nodes.write_posting import write_posting
 from graph.state import GraphState
-from langgraph.graph import StateGraph
 
-from graph.consts import ABORT, SUMMARIZE, RETRIEVE_VALUES, GRADE_DOCUMENTS, WRITE_ANSWER
+# Create a custom logger
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
+
+
+# Function to print the output of each node
+def print_node_output(node_name, node_function, *args, **kwargs):
+    output = node_function(*args, **kwargs)
+    state_utils.save_state(output, node_name)
+    log.debug(f"Output of {node_name}: {output}")
+    return output
 
 
 def decide_to_answer(state):
@@ -29,10 +43,10 @@ workflow = StateGraph(GraphState)
 workflow.set_entry_point(SUMMARIZE)
 
 # Nodes
-workflow.add_node(SUMMARIZE, summarize_posting)
-workflow.add_node(RETRIEVE_VALUES, retrieve_values)
-workflow.add_node(GRADE_DOCUMENTS, grade_documents)
-workflow.add_node(WRITE_ANSWER, write_posting)
+workflow.add_node(SUMMARIZE, lambda *args, **kwargs: print_node_output(SUMMARIZE, summarize_posting, *args, **kwargs))
+workflow.add_node(RETRIEVE_VALUES, lambda *args, **kwargs: print_node_output(RETRIEVE_VALUES, retrieve_values, *args, **kwargs))
+workflow.add_node(GRADE_DOCUMENTS, lambda *args, **kwargs: print_node_output(GRADE_DOCUMENTS, grade_documents, *args, **kwargs))
+workflow.add_node(WRITE_ANSWER, lambda *args, **kwargs: print_node_output(WRITE_ANSWER, write_posting, *args, **kwargs))
 
 # Value retriever
 # Answer writer

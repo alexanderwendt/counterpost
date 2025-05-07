@@ -1,3 +1,4 @@
+import pickle
 from typing import List, TypedDict
 
 
@@ -18,6 +19,8 @@ class GraphState(TypedDict):
 
     posting: str
     summary: str
-    value_documents: List[str]
+    loaded_value_documents: List[str]
+    filtered_value_documents: List[str]
     values: str
     answer: str
+
