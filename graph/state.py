@@ -23,4 +23,6 @@ class GraphState(TypedDict):
     filtered_value_documents: List[str]
     values: str
     answer: str
+    loaded_style_documents: List[str]
+    style_answer: str
 

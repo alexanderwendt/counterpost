@@ -1,0 +1,29 @@
+import logging
+from typing import Dict, Any
+
+from graph import state_utils
+from graph.chains.posting_writer import posting_writer
+from graph.chains.style_writer import style_writer
+from graph.consts import WRITE_ANSWER
+from graph.state import GraphState
+
+# Create a custom logger
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__name__)
+
+is_activated = True
+
+def write_posting(state: GraphState) -> Dict[str, Any]:
+    log.info("---APPLY MY STYLE TO THE POSTING---")
+
+    if is_activated:
+        posting = state["answer"]
+        documents = state["loaded_style_documents"]
+
+        style_answer = style_writer.invoke({"loaded_style_documents": documents, "posting": posting}).content
+
+    else:
+        style_answer = state_utils.load_state(WRITE_ANSWER)["style_answer"]
+
+    log.debug("Counterpost with my style: {}".format(style_answer))
+    return {"style_answer": style_answer}

@@ -8,10 +8,10 @@ from graph.consts import RETRIEVE_VALUES
 from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
-agent_type = 'value_agent'
+agent_type = 'style_agent'
 config = load_config("./conf/config.ini")
 
-is_activated: bool = False
+is_activated: bool = True
 
 
 def retrieve_values(state: GraphState) -> Dict[str, Any]:
@@ -21,17 +21,17 @@ def retrieve_values(state: GraphState) -> Dict[str, Any]:
     :param state:
     :return:
     '''
-    print("---GET RELEVANT OWN VALUES ON THE POST---")
+    print("---GET RELEVANT STYLE FOR THE POST---")
 
     if is_activated:
-        summary = state["summary"]
+        answer = state["answer"]
         retriever = CustomChromaRetriever(
             collection_name=config[agent_type]['collection_name'],
             persist_directory=config[agent_type]['persist_directory'],
             embedding_function=OpenAIEmbeddings(),
         ).as_retriever
 
-        value_documents = retriever.invoke(summary)
+        style_documents = retriever.invoke(answer)
     else:
-        value_documents = [state_utils.load_state(RETRIEVE_VALUES)["loaded_value_documents"]]
-    return {"loaded_value_documents": value_documents}
+        style_documents = [state_utils.load_state(RETRIEVE_VALUES)["loaded_style_documents"]]
+    return {"loaded_style_documents": style_documents}

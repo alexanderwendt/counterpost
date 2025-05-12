@@ -11,21 +11,39 @@ class GradeDocuments(BaseModel):
     """
 
     binary_score: str = Field(
-        description="Documents are relevant to the question or posting, 'yes' or 'no'"
+        description="Retrieved documents are relevant to the question, 'yes' or 'no'"
+    )
+    comment: str = Field(
+        description="Description why the score was decided to be yes or no"
     )
 
 
 structured_llm_grader = llm.with_structured_output(GradeDocuments)
 
-system = """You are a grader assessing relevance of a retrieved document to a user question or posting. \n
-    If the document contains keyword(s) or semantic meaning related to the question or posting, grade it as relevant. \n
-    Give a binary score 'yes' or 'no' to indicate whether the document is relevant to the question
+system = """
+    You are a grader assessing the relevance of a document to a summary. The document will be used to create a counter 
+    statement to a post. Check if the documents are related to each other, describing the same topic, answering the same 
+    questions, also if their answers are opposing.
+    
+    Parameters:
+    - Summary: The summarized post.
+    - Document: Document to check for relevance.
+    
+    Instructions:
+    1. Identify Common Themes: Focus on identifying common themes or topics between the summary and the document, even 
+    if they present opposing viewpoints. If they are opposing viewpoints, then the document is relevant to the summary.
+    2. Assess Relevance: Determine if the document addresses the same overarching topic or question as the summary, regardless of the stance taken.
+    3. Provide Binary Score: Give a binary score 'yes' or 'no' to indicate whether the document is relevant to the summary.
+    
+    Returns:
+    Binary score if the retrieved documents are relevant to the summary content, with the format 'yes' or 'no'.
+    In comments, you explain your decision.
     """
 
 grade_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system),
-        ("human", "Retrieved document: \n\n {document} \n\n User question or posting: {posting}"),
+        ("human", "Document: \n\n {document} \n\n Summary: {summary}"),
     ]
 )
 

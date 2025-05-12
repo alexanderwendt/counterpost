@@ -7,11 +7,12 @@ from graph.chains.summarizer_chain import summarizer_chain
 
 # Create configuration
 config = load_config("./conf/config.ini")
-is_activated = True
 
 # Create a custom logger
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
+
+is_activated = False
 
 
 def summarize_posting(state: GraphState):
@@ -28,7 +29,4 @@ def summarize_posting(state: GraphState):
 
     log.debug("Posting:\n{}, \nSummary: \n{}".format(posting, summary))
 
-    return {
-        "posting": posting,
-        "summary": summary
-    }
+    return {"summary": summary}

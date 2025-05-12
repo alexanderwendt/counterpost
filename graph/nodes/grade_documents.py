@@ -1,12 +1,18 @@
 from typing import Any, Dict
 
 import logging
+
+from graph.consts import GRADE_DOCUMENTS
+
+from graph import state_utils
 from graph.chains.retrieval_grader import retrieval_grader
 from graph.state import GraphState
 
 # Create a custom logger
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
+
+is_activated: bool = False
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
     """
@@ -19,18 +25,24 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
     """
 
     log.info("---CHECK DOCUMENT OF RELEVANCE TO POSTING---")
-    query = state["summary"]
-    documents = state["loaded_value_documents"]
 
-    filtered_docs = []
-    for d in documents:
-        score = retrieval_grader.invoke(
-            {"posting": query, "document": d.page_content}
-        )
-        grade = score.binary_score
-        if grade.lower() == "yes":
-            log.info("---GRADE: VALUE DOCUMENT RELEVANT---")
-            filtered_docs.append(d)
-        else:
-            log.info("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
-    return {"filtered_value_documents": filtered_docs, "summary": query}
+    if is_activated:
+        query = state["summary"]
+        documents = state["loaded_value_documents"]
+
+        filtered_docs = []
+        for d in documents:
+            document: str = d.page_content
+            score = retrieval_grader.invoke(
+                {"summary": query, "document": document}
+            )
+            grade = score.binary_score
+            comment = score.comment
+            if grade.lower() == "yes":
+                log.info("---GRADE: VALUE DOCUMENT RELEVANT---")
+                filtered_docs.append(d)
+            else:
+                log.info("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
+    else:
+        filtered_docs = state_utils.load_state(GRADE_DOCUMENTS)["filtered_value_documents"]
+    return {"filtered_value_documents": filtered_docs}

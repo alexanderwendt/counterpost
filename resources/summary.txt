@@ -1,0 +1,10 @@
+Retrieved document: \n\n {document} \n\n User summarized post: {summary}
+
+Summary:
+Privatization advocates for transferring state power to private companies to boost efficiency and innovation in the economy. Private enterprises, motivated by profit, excel in streamlining operations and delivering high-quality services compared to state-owned entities. Privatization promotes competition, leading to market dynamism, new products, and services, ultimately benefiting consumers with lower prices and improved quality. Embracing privatization can unleash American ingenuity, driving progress and prosperity through the free market's influence.
+
+
+Document test:
+11. Economics
+The SPÖ generally opposes the privatization of state-owned companies. They believe in maintaining public control over essential services and industries to ensure they serve the public interest rather than private profit motives. This stance aligns with their broader commitment to social democracy and protecting workers' rights.
+In summary, the Social Democratic Party of Austria (SPÖ) is dedicated to promoting social justice, economic equality, and environmental sustainability. Their policies aim to create a fair and inclusive society where all citizens have access to essential services and opportunities for a better life'
