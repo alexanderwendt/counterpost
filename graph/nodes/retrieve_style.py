@@ -4,17 +4,17 @@ from langchain_community.embeddings import OpenAIEmbeddings
 
 from config_loader import load_config
 from graph import state_utils
-from graph.consts import RETRIEVE_VALUES
+from graph.consts import RETRIEVE_VALUES, RETRIEVE_STYLE
 from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
 agent_type = 'style_agent'
 config = load_config("./conf/config.ini")
 
-is_activated: bool = True
+is_activated: bool = False
 
 
-def retrieve_values(state: GraphState) -> Dict[str, Any]:
+def retrieve_style(state: GraphState) -> Dict[str, Any]:
     '''
     Apply the loaded values on the post to write an answer
 
@@ -33,5 +33,5 @@ def retrieve_values(state: GraphState) -> Dict[str, Any]:
 
         style_documents = retriever.invoke(answer)
     else:
-        style_documents = [state_utils.load_state(RETRIEVE_VALUES)["loaded_style_documents"]]
+        style_documents = state_utils.load_state(RETRIEVE_STYLE)["loaded_style_documents"]
     return {"loaded_style_documents": style_documents}

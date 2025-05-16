@@ -1,5 +1,6 @@
 import argparse
 import logging
+import pprint
 
 from dotenv import load_dotenv
 
@@ -36,6 +37,9 @@ if  __name__ == '__main__':
 
     original_post = load_file(config[APP]['posting_path'])
 
-    print("Counterpost")
+    log.info("Counterpost")
     result = app.invoke(input={"posting": original_post})
-    print(result)
+    log.info(result["answer"])
+    log.info(pprint.pformat(result["style_answer"]))
+
+    log.info("Program end")

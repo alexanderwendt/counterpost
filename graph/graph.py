@@ -5,7 +5,8 @@ from langgraph.graph import StateGraph
 
 from graph import state_utils
 from graph.consts import ABORT, SUMMARIZE, RETRIEVE_VALUES, GRADE_DOCUMENTS, WRITE_ANSWER, RETRIEVE_STYLE, WRITE_STYLE
-from graph.nodes import retrieve_style, write_style
+from graph.nodes.retrieve_style import retrieve_style
+from graph.nodes.write_style import write_style
 from graph.nodes.grade_documents import grade_documents
 from graph.nodes.retrieve_values import retrieve_values
 from graph.nodes.summarize_posting import summarize_posting

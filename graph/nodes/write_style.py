@@ -13,7 +13,8 @@ log = logging.getLogger(__name__)
 
 is_activated = True
 
-def write_posting(state: GraphState) -> Dict[str, Any]:
+
+def write_style(state: GraphState) -> Dict[str, Any]:
     log.info("---APPLY MY STYLE TO THE POSTING---")
 
     if is_activated:

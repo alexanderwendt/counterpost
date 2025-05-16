@@ -33,5 +33,5 @@ def retrieve_values(state: GraphState) -> Dict[str, Any]:
 
         value_documents = retriever.invoke(summary)
     else:
-        value_documents = [state_utils.load_state(RETRIEVE_VALUES)["loaded_value_documents"]]
+        value_documents = state_utils.load_state(RETRIEVE_VALUES)["loaded_value_documents"]
     return {"loaded_value_documents": value_documents}

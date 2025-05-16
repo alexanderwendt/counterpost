@@ -1,13 +1,15 @@
 from langchain_core.prompts import ChatPromptTemplate
-from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(temperature=0) #gpt 3.5
 
-system_prompt = """You are an my personal assistant for transforming a text to sound as it was written by me. 
-                 The document to process and to rewrite ist in the variable 'posting'. The style, which you shall 
-                 use to rewrite the text ist provided as a list of documents in the variable 'Style documents'. You returns
-                 the processed text.
+system_prompt = """
+        You are a style transfer assistant. Your task is to rewrite a given text ("posting") using only 
+        the **style** of another document ("Style documents"). Do not copy content or meaning from the style documents. 
+        Use only its tone, vocabulary, sentence structure, and stylistic features. 
+        For example, if the style documents are written in shakespearean style, rewrite the posting in shakespearean speak, even if the topics 
+        are unrelated. Be creative and consistent in applying 
+        the style. Output only the rewritten version of the posting.
                  """
 
 input_prompt = ChatPromptTemplate.from_messages(
