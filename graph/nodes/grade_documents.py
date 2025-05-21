@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 import logging
 
+from config_loader import load_config, IS_ACTIVATED, VALUE_GRADER_AGENT
 from graph.consts import GRADE_DOCUMENTS
 
 from graph import state_utils
@@ -12,7 +13,8 @@ from graph.state import GraphState
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-is_activated: bool = False
+conf = load_config()
+is_activated: bool = conf[VALUE_GRADER_AGENT][IS_ACTIVATED]
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
     """
@@ -37,12 +39,12 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
                 {"summary": query, "document": document}
             )
             grade = score.binary_score
-            comment = score.comment
             if grade.lower() == "yes":
                 log.info("---GRADE: VALUE DOCUMENT RELEVANT---")
                 filtered_docs.append(d)
             else:
                 log.info("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
+            log.debug("Grading comment: {}".format(score.comment))
     else:
         filtered_docs = state_utils.load_state(GRADE_DOCUMENTS)["filtered_value_documents"]
     return {"filtered_value_documents": filtered_docs}

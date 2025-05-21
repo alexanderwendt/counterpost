@@ -1,6 +1,7 @@
 import logging
 from typing import Dict, Any
 
+from config_loader import load_config, POSTING_WRITER_AGENT, IS_ACTIVATED
 from graph import state_utils
 from graph.chains.posting_writer import posting_writer
 from graph.consts import WRITE_ANSWER
@@ -10,7 +11,8 @@ from graph.state import GraphState
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-is_activated = False
+conf = load_config()
+is_activated: bool = conf[POSTING_WRITER_AGENT][IS_ACTIVATED]
 
 def write_posting(state: GraphState) -> Dict[str, Any]:
     log.info("---GENERATE ANSWER TO POSTING---")

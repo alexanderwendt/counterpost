@@ -2,17 +2,14 @@ from typing import Any, Dict
 
 from langchain_community.embeddings import OpenAIEmbeddings
 
-from config_loader import load_config
+from config_loader import load_config, VALUE_RETRIEVAL_AGENT, IS_ACTIVATED
 from graph import state_utils
 from graph.consts import RETRIEVE_VALUES
 from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
-agent_type = 'value_agent'
-config = load_config("./conf/config.ini")
-
-is_activated: bool = False
-
+conf = load_config()
+is_activated: bool = conf[VALUE_RETRIEVAL_AGENT][IS_ACTIVATED]
 
 def retrieve_values(state: GraphState) -> Dict[str, Any]:
     '''
@@ -26,8 +23,8 @@ def retrieve_values(state: GraphState) -> Dict[str, Any]:
     if is_activated:
         summary = state["summary"]
         retriever = CustomChromaRetriever(
-            collection_name=config[agent_type]['collection_name'],
-            persist_directory=config[agent_type]['persist_directory'],
+            collection_name=conf[VALUE_RETRIEVAL_AGENT]['collection_name'],
+            persist_directory=conf[VALUE_RETRIEVAL_AGENT]['persist_directory'],
             embedding_function=OpenAIEmbeddings(),
         ).as_retriever
 

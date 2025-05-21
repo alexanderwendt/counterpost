@@ -1,18 +1,19 @@
 import logging
 
-from config_loader import load_config
+from config_loader import load_config, SUMMARIZER_AGENT, IS_ACTIVATED
 from graph import state_utils
 from graph.state import GraphState
-from graph.chains.summarizer_chain import summarizer_chain
+from graph.chains.summarizer import summarizer_chain
 
 # Create configuration
-config = load_config("./conf/config.ini")
+conf = load_config()
 
 # Create a custom logger
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-is_activated = False
+conf = load_config()
+is_activated = conf[SUMMARIZER_AGENT][IS_ACTIVATED]
 
 
 def summarize_posting(state: GraphState):

@@ -1,6 +1,7 @@
 import argparse
 import logging
 import pprint
+from utils.file_utils import load_file
 
 from dotenv import load_dotenv
 
@@ -12,7 +13,7 @@ from graph.graph import app
 
 parser = argparse.ArgumentParser(description="Ingest documents as Rag source")
 
-parser.add_argument('--conf', type=str, help='Path to config file', required=True)
+parser.add_argument('--conf', type=str, help='Path to config file', required=False)
 args = parser.parse_args()
 
 # Create a custom logger
@@ -22,12 +23,7 @@ log = logging.getLogger(__name__)
 log.debug("Arguments: {}".format(args))
 
 # Create configuration
-config = load_config(args.conf)
-
-
-def load_file(file_path: str) -> str:
-    with open(file_path, 'r') as file:
-        return file.read()
+conf = load_config(args.conf)
 
 
 if  __name__ == '__main__':
@@ -35,7 +31,7 @@ if  __name__ == '__main__':
     Counterpost
     '''
 
-    original_post = load_file(config[APP]['posting_path'])
+    original_post = load_file(conf[APP]['posting_path'])
 
     log.info("Counterpost")
     result = app.invoke(input={"posting": original_post})

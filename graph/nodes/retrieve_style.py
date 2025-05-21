@@ -2,16 +2,14 @@ from typing import Any, Dict
 
 from langchain_community.embeddings import OpenAIEmbeddings
 
-from config_loader import load_config
+from config_loader import load_config, IS_ACTIVATED, STYLE_RETRIEVER_AGENT
 from graph import state_utils
 from graph.consts import RETRIEVE_VALUES, RETRIEVE_STYLE
 from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
-agent_type = 'style_agent'
-config = load_config("./conf/config.ini")
-
-is_activated: bool = False
+conf = load_config()
+is_activated: bool = conf[STYLE_RETRIEVER_AGENT][IS_ACTIVATED]
 
 
 def retrieve_style(state: GraphState) -> Dict[str, Any]:
@@ -26,8 +24,8 @@ def retrieve_style(state: GraphState) -> Dict[str, Any]:
     if is_activated:
         answer = state["answer"]
         retriever = CustomChromaRetriever(
-            collection_name=config[agent_type]['collection_name'],
-            persist_directory=config[agent_type]['persist_directory'],
+            collection_name=conf[STYLE_RETRIEVER_AGENT]['collection_name'],
+            persist_directory=conf[STYLE_RETRIEVER_AGENT]['persist_directory'],
             embedding_function=OpenAIEmbeddings(),
         ).as_retriever
 
