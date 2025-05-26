@@ -35,7 +35,8 @@ if  __name__ == '__main__':
 
     log.info("Counterpost")
     result = app.invoke(input={"posting": original_post})
-    log.info(result["answer"])
-    log.info(pprint.pformat(result["style_answer"]))
+    if result["answer"]:
+        log.info(result["answer"])
+        log.info(pprint.pformat(result["style_answer"]))
 
     log.info("Program end")

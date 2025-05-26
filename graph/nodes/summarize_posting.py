@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 conf = load_config()
-is_activated = conf[SUMMARIZER_AGENT][IS_ACTIVATED]
+is_activated: bool = conf.getboolean(SUMMARIZER_AGENT, IS_ACTIVATED)
 
 
 def summarize_posting(state: GraphState):

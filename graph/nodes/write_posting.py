@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 conf = load_config()
-is_activated: bool = conf[POSTING_WRITER_AGENT][IS_ACTIVATED]
+is_activated: bool = conf.getboolean(POSTING_WRITER_AGENT, IS_ACTIVATED)
 
 def write_posting(state: GraphState) -> Dict[str, Any]:
     log.info("---GENERATE ANSWER TO POSTING---")

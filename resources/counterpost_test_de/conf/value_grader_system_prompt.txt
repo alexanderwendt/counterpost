@@ -12,6 +12,9 @@ Instructions:
 2. Assess Relevance: Determine if the document addresses the same overarching topic or question as the summary, regardless of the stance taken.
 3. Provide Binary Score: Give a binary score 'yes' or 'no' to indicate whether the document is relevant to the summary.
 
+Note: Relevance means that the topics are overlapping, but the views on a topic can be contrary, i.e. also at different
+views, the answer would be a 'yes'.
+
 Returns:
 Binary score if the retrieved documents are relevant to the summary content, with the format 'yes' or 'no'.
 In comments, you explain your decision.

@@ -9,7 +9,7 @@ from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
 conf = load_config()
-is_activated: bool = conf[STYLE_RETRIEVER_AGENT][IS_ACTIVATED]
+is_activated: bool = conf.getboolean(STYLE_RETRIEVER_AGENT, IS_ACTIVATED)
 
 
 def retrieve_style(state: GraphState) -> Dict[str, Any]:

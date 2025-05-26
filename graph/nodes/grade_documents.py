@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 conf = load_config()
-is_activated: bool = conf[VALUE_GRADER_AGENT][IS_ACTIVATED]
+is_activated: bool = conf.getboolean(VALUE_GRADER_AGENT, IS_ACTIVATED)
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
     """

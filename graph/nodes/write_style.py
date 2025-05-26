@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 conf = load_config()
-is_activated: bool = conf[STYLE_WRITER_AGENT][IS_ACTIVATED]
+is_activated: bool = conf.getboolean(STYLE_WRITER_AGENT, IS_ACTIVATED)
 
 def write_style(state: GraphState) -> Dict[str, Any]:
     log.info("---APPLY MY STYLE TO THE POSTING---")
