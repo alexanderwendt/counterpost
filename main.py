@@ -1,6 +1,9 @@
 import argparse
 import logging
+import os
 import pprint
+
+from utils import file_utils
 from utils.file_utils import load_file
 
 from dotenv import load_dotenv
@@ -35,8 +38,18 @@ if  __name__ == '__main__':
 
     log.info("Counterpost")
     result = app.invoke(input={"posting": original_post})
+
+    result_base_dir: str = conf.get(APP, "result_base_dir")
+    os.makedirs(result_base_dir, exist_ok=True)
+
+    file_utils.save_file(os.path.join(result_base_dir, "posting.txt"), result.get("posting"))
+    file_utils.save_file(os.path.join(result_base_dir, "summary.txt"), result.get("summary"))
+
     if result.get("answer"):
-        log.info(result["answer"])
+        file_utils.save_file(os.path.join(result_base_dir, "neutral_answer.txt"), result.get("answer"))
+        file_utils.save_file(os.path.join(result_base_dir, "final_answer.txt"), result.get("style_answer"))
+
+        log.info(pprint.pformat(result["answer"]))
         log.info(pprint.pformat(result["style_answer"]))
 
     log.info("Program end")

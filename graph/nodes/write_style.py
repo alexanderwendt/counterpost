@@ -5,7 +5,7 @@ from config_loader import load_config, STYLE_WRITER_AGENT, IS_ACTIVATED, APP
 from graph import state_utils
 from graph.chains.posting_writer import posting_writer
 from graph.chains.style_writer import style_writer
-from graph.consts import WRITE_ANSWER
+from graph.consts import WRITE_ANSWER, WRITE_STYLE
 from graph.state import GraphState
 
 # Create a custom logger
@@ -25,7 +25,7 @@ def write_style(state: GraphState) -> Dict[str, Any]:
 
         style_answer = style_writer.invoke({"loaded_style_documents": documents, "posting": posting}).content
     else:
-        style_answer = state_utils.load_state(app_name, WRITE_ANSWER)["style_answer"]
+        style_answer = state_utils.load_state(app_name, WRITE_STYLE)["style_answer"]
 
     log.debug("Counterpost with my style: {}".format(style_answer))
     return {"style_answer": style_answer}
