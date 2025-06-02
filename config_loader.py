@@ -22,6 +22,7 @@ STYLE_WRITER_AGENT = 'style_writer_agent'
 SYSTEM_PROMPT = 'system_prompt'
 IS_ACTIVATED = 'is_activated'
 
+
 def load_config(file_path: str = None):
     '''
     Load config
@@ -35,6 +36,9 @@ def load_config(file_path: str = None):
         os.environ[env_path_variable] = file_path
     else:
         log.debug("Load config from default path in .env")
+
+    with open(file_path, encoding='utf-8') as f:
+        config.read_file(f)
 
     config.read(os.getenv(env_path_variable))
 
