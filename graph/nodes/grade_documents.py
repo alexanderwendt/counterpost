@@ -2,7 +2,7 @@ from typing import Any, Dict
 
 import logging
 
-from config_loader import load_config, IS_ACTIVATED, VALUE_GRADER_AGENT
+from config_loader import load_config, IS_ACTIVATED, VALUE_GRADER_AGENT, APP
 from graph.consts import GRADE_DOCUMENTS
 
 from graph import state_utils
@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 conf = load_config()
+app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(VALUE_GRADER_AGENT, IS_ACTIVATED)
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
@@ -36,7 +37,7 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
         for d in documents:
             document: str = d.page_content
             score = retrieval_grader.invoke(
-                {"summary": query, "document": document}
+                {"my_position": document, "summary": query}
             )
             grade = score.binary_score
             if grade.lower() == "yes":
@@ -46,5 +47,5 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
                 log.info("---GRADE: VALUE DOCUMENT NOT RELEVANT, SKIP---")
             log.debug("Grading comment: {}".format(score.comment))
     else:
-        filtered_docs = state_utils.load_state(GRADE_DOCUMENTS)["filtered_value_documents"]
+        filtered_docs = state_utils.load_state(app_name, GRADE_DOCUMENTS)["filtered_value_documents"]
     return {"filtered_value_documents": filtered_docs}

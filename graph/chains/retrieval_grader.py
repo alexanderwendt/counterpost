@@ -25,30 +25,11 @@ class GradeDocuments(BaseModel):
 
 structured_llm_grader = llm.with_structured_output(GradeDocuments)
 
-# system = """
-#     You are a grader assessing the relevance of a document to a summary. The document will be used to create a counter
-#     statement to a post. Check if the documents are related to each other, describing the same topic, answering the same
-#     questions, also if their answers are opposing.
-#
-#     Parameters:
-#     - Summary: The summarized post.
-#     - Document: Document to check for relevance.
-#
-#     Instructions:
-#     1. Identify Common Themes: Focus on identifying common themes or topics between the summary and the document, even
-#     if they present opposing viewpoints. If they are opposing viewpoints, then the document is relevant to the summary.
-#     2. Assess Relevance: Determine if the document addresses the same overarching topic or question as the summary, regardless of the stance taken.
-#     3. Provide Binary Score: Give a binary score 'yes' or 'no' to indicate whether the document is relevant to the summary.
-#
-#     Returns:
-#     Binary score if the retrieved documents are relevant to the summary content, with the format 'yes' or 'no'.
-#     In comments, you explain your decision.
-#     """
-
 grade_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
-        ("human", "Document: \n\n {document} \n\n Summary: {summary}"),
+        ("human", "Begin Summary: {summary}\n\nEnd Summary\n============================================="
+                  "\n\nBegin My position: \n\n {my_position}\n\nEnd My position"),
     ]
 )
 

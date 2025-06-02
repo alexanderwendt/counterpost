@@ -1,18 +1,17 @@
 import logging
 
-from config_loader import load_config, SUMMARIZER_AGENT, IS_ACTIVATED
+from config_loader import load_config, SUMMARIZER_AGENT, IS_ACTIVATED, APP
 from graph import state_utils
 from graph.state import GraphState
 from graph.chains.summarizer import summarizer_chain
-
-# Create configuration
-conf = load_config()
 
 # Create a custom logger
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
+# Create configuration
 conf = load_config()
+app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(SUMMARIZER_AGENT, IS_ACTIVATED)
 
 
@@ -26,7 +25,7 @@ def summarize_posting(state: GraphState):
         ).content
     else:
         log.warning("Module deactivated. Load from state SUMMARIZE")
-        summary = state_utils.load_state("SUMMARIZE")["summary"]
+        summary = state_utils.load_state(app_name, "SUMMARIZE")["summary"]
 
     log.debug("Posting:\n{}, \nSummary: \n{}".format(posting, summary))
 

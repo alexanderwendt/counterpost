@@ -3,8 +3,8 @@ statement to a post. Check if the documents are related to each other, describin
 questions, also if their answers are opposing.
 
 Parameters:
+- My position: Document to check for relevance.
 - Summary: The summarized post.
-- Document: Document to check for relevance.
 
 Instructions:
 1. Identify Common Themes: Focus on identifying common themes or topics between the summary and the document, even

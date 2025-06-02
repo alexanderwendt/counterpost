@@ -3,6 +3,7 @@ import logging
 from langgraph.constants import END
 from langgraph.graph import StateGraph
 
+from config_loader import load_config, APP
 from graph import state_utils
 from graph.consts import ABORT, SUMMARIZE, RETRIEVE_VALUES, GRADE_DOCUMENTS, WRITE_ANSWER, RETRIEVE_STYLE, WRITE_STYLE
 from graph.nodes.retrieve_style import retrieve_style
@@ -17,11 +18,14 @@ from graph.state import GraphState
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
+conf = load_config()
+app_name: str = conf.get(APP, 'app_nickname')
+
 
 # Function to print the output of each node
-def print_node_output(node_name, node_function, *args, **kwargs):
+def print_node_output(node_name, folder_name: str, node_function, *args, **kwargs):
     output = node_function(*args, **kwargs)
-    state_utils.save_state(output, node_name)
+    state_utils.save_state(output, folder_name, node_name)
     log.debug(f"Output of {node_name}: {output}")
     return output
 
@@ -43,12 +47,12 @@ workflow = StateGraph(GraphState)
 workflow.set_entry_point(SUMMARIZE)
 
 # Nodes
-workflow.add_node(SUMMARIZE, lambda *args, **kwargs: print_node_output(SUMMARIZE, summarize_posting, *args, **kwargs))
-workflow.add_node(RETRIEVE_VALUES, lambda *args, **kwargs: print_node_output(RETRIEVE_VALUES, retrieve_values, *args, **kwargs))
-workflow.add_node(GRADE_DOCUMENTS, lambda *args, **kwargs: print_node_output(GRADE_DOCUMENTS, grade_documents, *args, **kwargs))
-workflow.add_node(WRITE_ANSWER, lambda *args, **kwargs: print_node_output(WRITE_ANSWER, write_posting, *args, **kwargs))
-workflow.add_node(RETRIEVE_STYLE, lambda *args, **kwargs: print_node_output(RETRIEVE_STYLE, retrieve_style, *args, **kwargs))
-workflow.add_node(WRITE_STYLE, lambda *args, **kwargs: print_node_output(WRITE_STYLE, write_style, *args, **kwargs))
+workflow.add_node(SUMMARIZE, lambda *args, **kwargs: print_node_output(SUMMARIZE, app_name, summarize_posting, *args, **kwargs))
+workflow.add_node(RETRIEVE_VALUES, lambda *args, **kwargs: print_node_output(RETRIEVE_VALUES, app_name, retrieve_values, *args, **kwargs))
+workflow.add_node(GRADE_DOCUMENTS, lambda *args, **kwargs: print_node_output(GRADE_DOCUMENTS, app_name, grade_documents, *args, **kwargs))
+workflow.add_node(WRITE_ANSWER, lambda *args, **kwargs: print_node_output(WRITE_ANSWER, app_name, write_posting, *args, **kwargs))
+workflow.add_node(RETRIEVE_STYLE, lambda *args, **kwargs: print_node_output(RETRIEVE_STYLE, app_name, retrieve_style, *args, **kwargs))
+workflow.add_node(WRITE_STYLE, lambda *args, **kwargs: print_node_output(WRITE_STYLE, app_name, write_style, *args, **kwargs))
 
 # Value retriever
 # Answer writer
