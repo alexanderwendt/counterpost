@@ -8,11 +8,9 @@ from utils.file_utils import load_file
 
 from dotenv import load_dotenv
 
-from config_loader import load_config, APP
+from config_loader import load_config, APP, set_config
 
 load_dotenv()
-
-from graph.graph import app
 
 parser = argparse.ArgumentParser(description="Ingest documents as Rag source")
 
@@ -27,7 +25,9 @@ log.debug("Arguments: {}".format(args))
 
 # Create configuration
 conf = load_config(args.conf)
+set_config(conf)
 
+from graph.graph import app
 
 if  __name__ == '__main__':
     '''

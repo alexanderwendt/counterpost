@@ -1,7 +1,7 @@
 import logging
 from typing import Dict, Any
 
-from config_loader import load_config, STYLE_WRITER_AGENT, IS_ACTIVATED, APP
+from config_loader import load_config, STYLE_WRITER_AGENT, IS_ACTIVATED, APP, get_config
 from graph import state_utils
 from graph.chains.posting_writer import posting_writer
 from graph.chains.style_writer import style_writer
@@ -12,7 +12,7 @@ from graph.state import GraphState
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-conf = load_config()
+conf = get_config()
 app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(STYLE_WRITER_AGENT, IS_ACTIVATED)
 

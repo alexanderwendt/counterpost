@@ -35,11 +35,18 @@ def load_config(file_path: str = None):
         log.info("Load config from file: {}".format(file_path))
         os.environ[env_path_variable] = file_path
     else:
-        log.debug("Load config from default path in .env")
+        log.debug("Load config from default path in .env. Path: {}".format(os.environ[env_path_variable]))
 
-    with open(file_path, encoding='utf-8') as f:
+    with open(os.getenv(env_path_variable), encoding='utf-8') as f:
         config.read_file(f)
 
-    config.read(os.getenv(env_path_variable))
-
     return config
+
+
+def set_config(conf):
+    global config
+    config = conf
+
+def get_config():
+    return config
+

@@ -2,13 +2,13 @@ from typing import Any, Dict
 
 from langchain_community.embeddings import OpenAIEmbeddings
 
-from config_loader import load_config, VALUE_RETRIEVAL_AGENT, IS_ACTIVATED, APP
+from config_loader import load_config, VALUE_RETRIEVAL_AGENT, IS_ACTIVATED, APP, get_config
 from graph import state_utils
 from graph.consts import RETRIEVE_VALUES
 from graph.state import GraphState
 from storage.customretriever import CustomChromaRetriever
 
-conf = load_config()
+conf = get_config()
 app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(VALUE_RETRIEVAL_AGENT, IS_ACTIVATED)
 

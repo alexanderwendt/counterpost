@@ -2,12 +2,12 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
-from config_loader import load_config, POSTING_WRITER_AGENT, SYSTEM_PROMPT
+from config_loader import load_config, POSTING_WRITER_AGENT, SYSTEM_PROMPT, get_config
 from utils.file_utils import load_file
 
 llm = ChatOpenAI(temperature=0) #gpt 3.5
 
-conf = load_config()
+conf = get_config()
 system_prompt = load_file(conf[POSTING_WRITER_AGENT][SYSTEM_PROMPT])
 
 input_prompt = ChatPromptTemplate.from_messages(

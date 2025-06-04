@@ -2,7 +2,7 @@ from typing import Any, Dict
 
 import logging
 
-from config_loader import load_config, IS_ACTIVATED, VALUE_GRADER_AGENT, APP
+from config_loader import load_config, IS_ACTIVATED, VALUE_GRADER_AGENT, APP, get_config
 from graph.consts import GRADE_DOCUMENTS
 
 from graph import state_utils
@@ -13,7 +13,8 @@ from graph.state import GraphState
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-conf = load_config()
+#conf = load_config()
+conf = get_config()
 app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(VALUE_GRADER_AGENT, IS_ACTIVATED)
 

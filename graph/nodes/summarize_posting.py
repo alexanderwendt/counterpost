@@ -1,6 +1,6 @@
 import logging
 
-from config_loader import load_config, SUMMARIZER_AGENT, IS_ACTIVATED, APP
+from config_loader import load_config, SUMMARIZER_AGENT, IS_ACTIVATED, APP, get_config
 from graph import state_utils
 from graph.state import GraphState
 from graph.chains.summarizer import summarizer_chain
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 # Create configuration
-conf = load_config()
+conf = get_config()
 app_name: str = conf.get(APP, 'app_nickname')
 is_activated: bool = conf.getboolean(SUMMARIZER_AGENT, IS_ACTIVATED)
 

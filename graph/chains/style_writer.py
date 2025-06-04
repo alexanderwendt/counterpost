@@ -1,12 +1,12 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
-from config_loader import load_config, SYSTEM_PROMPT, STYLE_WRITER_AGENT
+from config_loader import load_config, SYSTEM_PROMPT, STYLE_WRITER_AGENT, get_config
 from utils.file_utils import load_file
 
 llm = ChatOpenAI(temperature=0) #gpt 3.5
 
-conf = load_config()
+conf = get_config()
 system_prompt = load_file(conf[STYLE_WRITER_AGENT][SYSTEM_PROMPT])
 
 #system_prompt = """

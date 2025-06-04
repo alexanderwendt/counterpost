@@ -2,12 +2,12 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
-from config_loader import load_config, VALUE_GRADER_AGENT, SYSTEM_PROMPT
+from config_loader import load_config, VALUE_GRADER_AGENT, SYSTEM_PROMPT, get_config
 from utils.file_utils import load_file
 
 llm = ChatOpenAI(temperature=0)  # gpt 3.5
 
-conf = load_config()
+conf = get_config()
 system_prompt = load_file(conf[VALUE_GRADER_AGENT][SYSTEM_PROMPT])
 
 class GradeDocuments(BaseModel):
